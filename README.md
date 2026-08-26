@@ -2,27 +2,29 @@
 
 A small private-source web app for collecting feature requirements, Docs, Figma links, team context, and constraints before sending them to ChatGPT for task breakdown.
 
-## Current flow
+## Recommended flow
 
 1. Open the web app.
 2. Fill in Feature, Requirement, Docs, Figma, Team, Constraints, and Notes.
 3. Click **Generate request**.
-4. Review the generated Markdown.
-5. Click **Copy for ChatGPT** and paste it into ChatGPT.
-6. ChatGPT breaks the work into team tasks with ownership, dependencies, parallel work, conflict notes, and merge order.
+4. Click **Save to private GitHub**.
+5. GitHub opens a prefilled Issue in `pth190501/task-planner`; submit it.
+6. Ask ChatGPT:
+
+   `Break task pth190501/task-planner issue #<number>`
+
+ChatGPT can read the private issue through the connected GitHub integration and return Markdown with ownership, dependencies, parallel work, conflict notes, and merge order.
+
+You can also use **Copy for ChatGPT** or **Download .md** without creating an Issue.
 
 ## Privacy in v1
 
 - No OpenAI / Anthropic / Gemini API key is stored in the page.
-- Form data is not sent to a server.
 - Drafts and recent history are stored only in browser `localStorage`.
-- Downloaded Markdown stays on your machine.
+- Data is sent to GitHub only when you choose **Save to private GitHub** and submit the private Issue.
+- Large requests are copied to clipboard instead of being put into an oversized URL; the web opens a new Issue and you paste the copied Markdown.
 
 ## Run locally
-
-Clone the repository and open `index.html` in a browser, or serve it with any static HTTP server.
-
-Example with Python:
 
 ```bash
 python3 -m http.server 8080
@@ -34,7 +36,7 @@ Then open `http://localhost:8080`.
 
 The app is fully static (`index.html`, `styles.css`, `app.js`) and can be published from the repository root with GitHub Pages.
 
-For a personal account, GitHub Pages from a private repository requires a GitHub plan that supports Pages for private repositories. A privately published Pages site itself requires GitHub Enterprise Cloud access control; otherwise treat the published UI as public and rely on the current local-only storage design for submitted data.
+GitHub Pages is available from private repositories on plans that support it. On personal accounts, a privately accessible Pages site itself requires Enterprise access control; otherwise the published UI should be treated as public. The current app does not embed private data in the source and stores drafts locally in the browser.
 
 ## Files
 
@@ -50,7 +52,3 @@ skills/
 .github/
   ISSUE_TEMPLATE/        # fallback intake flow
 ```
-
-## Planned next step
-
-If the web workflow feels right, add optional authenticated persistence so submissions can be stored centrally and referenced by Request ID without putting AI API keys in the frontend.
