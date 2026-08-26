@@ -1,12 +1,10 @@
 const STORAGE_KEY = 'task-planner:draft:v1';
 const HISTORY_KEY = 'task-planner:history:v1';
 const HISTORY_LIMIT = 8;
-const REPO = 'pth190501/task-planner';
 
 const form = document.getElementById('taskForm');
 const preview = document.getElementById('preview');
 const requestIdEl = document.getElementById('requestId');
-const githubBtn = document.getElementById('githubBtn');
 const copyBtn = document.getElementById('copyBtn');
 const downloadBtn = document.getElementById('downloadBtn');
 const clearBtn = document.getElementById('clearBtn');
@@ -22,7 +20,7 @@ let saveTimer;
 
 const getValues = () => Object.fromEntries(fields.map(id => [id, document.getElementById(id).value.trim()]));
 const setValues = values => fields.forEach(id => document.getElementById(id).value = values?.[id] || '');
-const setActions = enabled => [githubBtn, copyBtn, downloadBtn].forEach(button => button.disabled = !enabled);
+const setActions = enabled => [copyBtn, downloadBtn].forEach(button => button.disabled = !enabled);
 
 const showToast = message => {
   toast.textContent = message;
@@ -90,9 +88,9 @@ const buildMarkdown = values => {
 
 const saveDraft = () => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(getValues()));
-  saveState.textContent = 'Draft saved';
+  saveState.textContent = 'Draft saved locally';
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => saveState.textContent = 'Draft autosaved', 1200);
+  saveTimer = setTimeout(() => saveState.textContent = 'Draft autosaved locally', 1200);
 };
 
 const loadDraft = () => {
@@ -177,30 +175,6 @@ form.addEventListener('submit', event => {
   addHistory(values, output.id, output.markdown);
   saveDraft();
   showToast('Request generated');
-});
-
-githubBtn.addEventListener('click', async () => {
-  if (!currentMarkdown) return;
-
-  const values = getValues();
-  const title = `[BREAKDOWN] ${values.feature}`;
-  const base = `https://github.com/${REPO}/issues/new`;
-  const fullUrl = `${base}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(currentMarkdown)}`;
-
-  // Avoid very long GitHub/browser query strings. If large, copy the body and open a blank issue with title only.
-  if (fullUrl.length > 7000) {
-    try {
-      await navigator.clipboard.writeText(currentMarkdown);
-      window.open(`${base}?title=${encodeURIComponent(title)}`, '_blank', 'noopener');
-      showToast('Issue opened · Markdown copied');
-    } catch (_) {
-      showToast('Request quá dài — dùng Download .md');
-    }
-    return;
-  }
-
-  window.open(fullUrl, '_blank', 'noopener');
-  showToast('Private GitHub Issue opened');
 });
 
 copyBtn.addEventListener('click', async () => {
