@@ -1,0 +1,7 @@
+.agent-card { padding: 18px; }
+.agent-controls { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 8px; align-items: center; }
+.agent-controls select { min-width: 0; }
+.agent-status { color: var(--muted); font-size: 12px; margin-top: 10px; }
+.agent-prompt-preview { min-height: 170px; max-height: 320px; overflow: auto; white-space: pre-wrap; word-break: break-word; margin: 12px 0 0; padding: 14px; background: rgba(5, 9, 19, .54); border: 1px solid var(--line); border-radius: 12px; color: #cfd7eb; font: 11.5px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+@media (max-width: 760px) { .agent-controls { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .agent-controls { grid-template-columns: 1fr; } }
