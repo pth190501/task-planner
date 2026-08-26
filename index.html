@@ -4,18 +4,18 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Task Planner</title>
-  <meta name="description" content="Collect feature requirements and generate a clean task-breakdown request." />
+  <meta name="description" content="Prepare requirements, Docs and Figma context for AI task breakdown." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="shell">
     <header class="hero">
       <div>
-        <span class="eyebrow">PRIVATE TASK INTAKE</span>
+        <span class="eyebrow">TASK BREAKDOWN INTAKE</span>
         <h1>Task Planner</h1>
-        <p>Nhập requirement, Doc, Figma và context team. Web sẽ chuẩn hóa thành Markdown để lưu vào GitHub private hoặc gửi thẳng cho ChatGPT.</p>
+        <p>Nhập requirement, Doc, Figma và context team. Web chuẩn hóa thành Markdown để gửi cho ChatGPT break task.</p>
       </div>
-      <div class="privacy">No AI API key · Draft local</div>
+      <div class="privacy">Local only · No backend · No API key</div>
     </header>
 
     <section class="grid">
@@ -26,7 +26,7 @@
         </div>
 
         <label><span>Feature / Work item *</span><input id="feature" name="feature" required placeholder="Ví dụ: Revamp Login Greeting" /></label>
-        <label><span>Project</span><input id="project" name="project" placeholder="Ví dụ: MyVNPT / Project A / Internal Tool" /></label>
+        <label><span>Project</span><input id="project" name="project" placeholder="Ví dụ: Project A / Internal Tool" /></label>
         <label><span>Requirement *</span><textarea id="requirement" name="requirement" required rows="8" placeholder="Mô tả yêu cầu, flow, business rule, expected behavior..."></textarea></label>
 
         <div class="two-col">
@@ -35,12 +35,12 @@
         </div>
 
         <label><span>Team</span><input id="team" name="team" placeholder="Ví dụ: 3 devs — A, B, C" /></label>
-        <label><span>Constraints / Known ownership</span><textarea id="constraints" name="constraints" rows="5" placeholder="Ví dụ: tránh nhiều người sửa HomeVC; Dev A sở hữu API layer; giữ UIKit + XIB..."></textarea></label>
+        <label><span>Constraints / Known ownership</span><textarea id="constraints" name="constraints" rows="5" placeholder="Ví dụ: tránh nhiều người sửa cùng screen; Dev A sở hữu API layer..."></textarea></label>
         <label><span>Additional notes</span><textarea id="notes" name="notes" rows="4" placeholder="Thông tin bổ sung nếu có..."></textarea></label>
 
         <div class="actions primary-actions">
           <button class="primary" type="submit">Generate request</button>
-          <span id="saveState" class="save-state">Draft autosaved</span>
+          <span id="saveState" class="save-state">Draft autosaved locally</span>
         </div>
       </form>
 
@@ -52,8 +52,7 @@
           </div>
           <pre id="preview" class="preview">Điền thông tin bên trái rồi chọn “Generate request”.</pre>
           <div class="actions">
-            <button id="githubBtn" class="primary" type="button" disabled>Save to private GitHub</button>
-            <button id="copyBtn" type="button" disabled>Copy for ChatGPT</button>
+            <button id="copyBtn" class="primary" type="button" disabled>Copy for ChatGPT</button>
             <button id="downloadBtn" type="button" disabled>Download .md</button>
           </div>
         </section>
@@ -61,8 +60,8 @@
         <section class="card hint-card">
           <span class="step">03</span>
           <h2>Break task</h2>
-          <p><strong>Cách tiện nhất:</strong> Save to private GitHub → Submit Issue → gửi cho ChatGPT số issue, ví dụ <code>Break task pth190501/task-planner issue #12</code>.</p>
-          <p>Hoặc chọn <strong>Copy for ChatGPT</strong> và paste trực tiếp vào chat.</p>
+          <p>Chọn <strong>Copy for ChatGPT</strong>, paste vào chat và gửi. Prompt đã yêu cầu chia task theo ownership, dependency, parallel work và hạn chế conflict.</p>
+          <p>Dữ liệu form không được gửi lên GitHub hay server nào. Draft chỉ nằm trong trình duyệt của bạn.</p>
         </section>
 
         <section class="card history-card">
