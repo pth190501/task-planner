@@ -1,32 +1,42 @@
 # Task Planner
 
-Static HTML/CSS/JS task-intake web app with an adaptive **Skill Router** and **offline-first** support.
+Static HTML/CSS/JS task planner with adaptive skill routing and a **live offline Markdown planner**.
 
 Site:
 
 `https://pth190501.github.io/task-planner/`
 
-## Main idea
-
-Do not force a task breakdown from bad input.
+## Main flow
 
 ```text
-Raw requirement / Docs / Figma
-          ↓
-      Skill Router
-          ↓
-Sparse? ───── yes ──→ Clarify critical gaps
-  │
-  no
-  ↓
-Spec-lite
-  ↓
-Read relevant sources
-  ↓
-Interface/Figma context when applicable
-  ↓
-Team Task Breakdown
+Type / paste requirement
+        ↓
+Skill Router + Local Planner
+        ↓
+Live Markdown Task Breakdown
+        ↓
+Copy / Download .md
+        ↓ optional
+Refine with ChatGPT when Docs/Figma need real source inspection
 ```
+
+There is no Generate step required for the baseline task plan. The preview updates while you type.
+
+## Offline behavior
+
+After the first online load, the Service Worker caches the app shell. The following continue to work offline:
+
+- Quick Paste
+- local auto-organize
+- Skill Router
+- live Markdown task generation
+- Quick / Standard mode
+- project profiles
+- local autosave/history
+- JSON import/export
+- Markdown copy/download
+
+Linked Docs/Figma are **not read by the offline planner**. They are preserved as references and can be inspected later through ChatGPT or another connected agent when online.
 
 ## Routed skill stack
 
@@ -39,90 +49,43 @@ Team Task Breakdown
 
 The router uses only relevant skills instead of applying the entire stack to every request.
 
-## Sparse requirement example
+## Example
 
 Input:
 
 `Tôi cần tạo 1 SDK để show log networking call API`
 
-Expected route:
+Live local output is structured around:
 
-`Clarify → Spec-lite → Interface Design → Task Breakdown`
-
-The generated AI request asks only the critical questions first, such as target platform or integration behavior, instead of inventing a full SDK architecture.
-
-## Offline-first
-
-The app uses a Service Worker to cache the static app shell.
-
-After the site has been opened online successfully once, you can reopen or reload it without a network connection.
-
-Still available offline:
-
-- Quick Paste / Auto organize
-- Skill Router
-- Generate AI request
-- Project profiles
-- Draft autosave / history
-- Markdown download
-- JSON import/export
-- Copy prompt
-
-Requires internet:
-
-- Opening ChatGPT
-- Reading remote Figma / Docs / Jira links
-- Any external website
-
-All task data remains stored locally in the browser.
-
-## Features
-
-- Quick Paste + local auto-organize
-- Quick / Standard planning mode
-- Automatic sparse-context scoring
-- Visual Skill Router
-- Force-plan option when assumptions are acceptable
-- Figma / Docs detection
-- SDK/API/interface detection
-- Project profiles stored locally
-- Recent history
-- Copy + Open ChatGPT
-- Markdown download
-- JSON import/export backup
-- Service Worker offline cache
-- Web app manifest
-- Online / Offline status indicator
+- Networking Capture Core & Log Model
+- SDK Public Interface & Host Integration
+- Network Log Viewer
+- Packaging, Safety & Integration Validation
+- Parallel plan / ownership / merge order
+- Assumptions and only critical open questions
 
 ## Privacy
 
 - No backend
 - No AI API key
-- Requirement data stays in browser `localStorage`
+- Requirement data stays in browser storage
 - No task input is committed to GitHub by the page
 - Public GitHub Pages contains only the static app source
 
-## Skill sources
-
-See [`skills/SOURCES.md`](skills/SOURCES.md) for the public skill repositories and patterns used as inspiration.
-
-## Files
+## Offline files
 
 ```text
 index.html
 styles.css
 router.css
+live-planner.css
 app.js
 enhancements.js
-sw.js
+live-planner.js
 manifest.webmanifest
-
-skills/
-  requirements-clarifier/
-  spec-lite/
-  source-context/
-  figma-context/
-  interface-planner/
-  team-task-breakdown/
-  SOURCES.md
+sw.js
 ```
+
+## Skills
+
+See [`skills/SOURCES.md`](skills/SOURCES.md) for the public patterns used as inspiration.
