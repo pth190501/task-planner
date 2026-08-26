@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="router.css" />
   <link rel="stylesheet" href="live-planner.css" />
   <link rel="stylesheet" href="agent-prompts.css" />
+  <link rel="stylesheet" href="v2.css" />
 </head>
 <body>
   <main class="shell">
@@ -18,14 +19,24 @@
       <div>
         <span class="eyebrow">S-TIER · LIVE OFFLINE TASK PLANNER</span>
         <h1>Task Planner</h1>
-        <p>Nhập hoặc paste requirement là Markdown task breakdown xuất hiện ngay. Planner chạy local/offline; sau đó có thể xuất prompt tối ưu riêng cho Claude, Codex, Antigravity hoặc ChatGPT.</p>
+        <p>Nhập hoặc paste requirement là Markdown task breakdown xuất hiện ngay. Planner chạy local/offline, route theo skill registry và xuất prompt riêng cho Claude, Codex, Antigravity hoặc ChatGPT.</p>
       </div>
       <div class="hero-actions">
-        <div class="privacy">Local planner</div>
+        <div class="version-bar">
+          <span id="appVersion" class="app-version">v2.0.0</span>
+          <span id="updateStatus" class="app-version">Checking app…</span>
+        </div>
+        <button id="checkUpdateBtn" class="ghost" type="button">Check update</button>
+        <button id="clearCacheBtn" class="ghost" type="button">Clear cache</button>
         <button id="exportBtn" class="ghost" type="button">Export data</button>
         <label class="import-label ghost">Import data<input id="importInput" type="file" accept="application/json,.json" hidden /></label>
       </div>
     </header>
+
+    <section id="updateBanner" class="update-banner">
+      <p><strong>New Task Planner version available.</strong> Reload để dùng code mới mà không mất draft local.</p>
+      <div class="update-actions"><button id="applyUpdateBtn" class="primary" type="button">Update & Reload</button></div>
+    </section>
 
     <section class="toolbar-row">
       <section class="mode-bar card slim-card">
@@ -67,27 +78,24 @@
         </section>
 
         <section class="card agent-card">
-          <div class="section-title compact"><div><span class="step">AI</span><h2>AI Prompt Target</h2></div><span class="optional">agent optimized</span></div>
+          <div class="section-title compact"><div><span class="step">AI</span><h2>Whole-plan Prompt</h2></div><span class="optional">agent optimized</span></div>
           <div class="agent-controls">
-            <select id="agentTarget" aria-label="AI target">
-              <option value="claude">Claude</option>
-              <option value="codex">Codex</option>
-              <option value="antigravity">Antigravity</option>
-              <option value="chatgpt">ChatGPT</option>
-            </select>
-            <select id="agentIntent" aria-label="Prompt intent">
-              <option value="implement">Implement</option>
-              <option value="plan">Plan</option>
-              <option value="review">Review</option>
-            </select>
-            <button id="copyAgentPromptBtn" class="primary" type="button" disabled>Copy agent prompt</button>
+            <select id="agentTarget" aria-label="AI target"><option value="claude">Claude</option><option value="codex">Codex</option><option value="antigravity">Antigravity</option><option value="chatgpt">ChatGPT</option></select>
+            <select id="agentIntent" aria-label="Prompt intent"><option value="implement">Implement</option><option value="plan">Plan</option><option value="review">Review</option></select>
+            <button id="copyAgentPromptBtn" class="primary" type="button" disabled>Copy whole-plan prompt</button>
             <button id="downloadAgentPromptBtn" type="button" disabled>Download prompt</button>
           </div>
           <div id="agentPromptStatus" class="agent-status">Waiting for task plan</div>
-          <pre id="agentPromptPreview" class="agent-prompt-preview">Nhập requirement để có Live Markdown Plan, sau đó prompt cho agent sẽ xuất hiện ở đây.</pre>
+          <pre id="agentPromptPreview" class="agent-prompt-preview">Nhập requirement để prompt agent xuất hiện.</pre>
         </section>
 
-        <section class="card hint-card"><span class="step">03</span><h2>Local-first flow</h2><p><strong>Input → Live Markdown → chọn agent → Copy prompt.</strong> Tất cả phần generate plan/prompt chạy local và offline.</p><p>Figma/Doc chỉ được đọc nội dung thật khi agent có kết nối phù hợp; prompt buộc agent không được giả vờ đã đọc source.</p></section>
+        <section class="card task-agent-section">
+          <div class="section-title compact"><div><span class="step">T</span><h2>Per-task Agent Prompts</h2></div><span class="optional">parallel agents</span></div>
+          <p class="router-reason">Giao từng task độc lập cho Codex / Claude / Antigravity / ChatGPT mà không gửi toàn bộ plan cho mỗi agent.</p>
+          <div id="taskAgentGrid" class="task-agent-grid empty">Nhập requirement để task prompt riêng xuất hiện.</div>
+        </section>
+
+        <section class="card hint-card"><span class="step">03</span><h2>Local-first flow</h2><p><strong>Input → Skill Registry → Live Markdown → per-task agent prompts.</strong> Generate plan/prompt chạy local và offline.</p><p>Figma/Doc chỉ được đọc nội dung thật khi agent có kết nối phù hợp; Source Confidence trong plan sẽ nói rõ linked source nào chưa được inspect.</p></section>
         <section class="card history-card"><div class="section-title compact"><div><span class="step">H</span><h2>Recent drafts</h2></div><button id="clearHistoryBtn" class="ghost" type="button">Clear all</button></div><div id="history" class="history empty">Chưa có draft nào.</div></section>
       </aside>
     </section>
@@ -96,6 +104,9 @@
   <script src="app.js"></script>
   <script src="enhancements.js"></script>
   <script src="live-planner.js"></script>
+  <script src="skill-engine.js"></script>
   <script src="agent-prompts.js"></script>
+  <script src="task-prompts.js"></script>
+  <script src="update-manager.js"></script>
 </body>
 </html>
