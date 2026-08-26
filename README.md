@@ -1,6 +1,6 @@
 # Task Planner
 
-Static HTML/CSS/JS task-intake web app with an adaptive **Skill Router**.
+Static HTML/CSS/JS task-intake web app with an adaptive **Skill Router** and **offline-first** support.
 
 Site:
 
@@ -51,6 +51,31 @@ Expected route:
 
 The generated AI request asks only the critical questions first, such as target platform or integration behavior, instead of inventing a full SDK architecture.
 
+## Offline-first
+
+The app uses a Service Worker to cache the static app shell.
+
+After the site has been opened online successfully once, you can reopen or reload it without a network connection.
+
+Still available offline:
+
+- Quick Paste / Auto organize
+- Skill Router
+- Generate AI request
+- Project profiles
+- Draft autosave / history
+- Markdown download
+- JSON import/export
+- Copy prompt
+
+Requires internet:
+
+- Opening ChatGPT
+- Reading remote Figma / Docs / Jira links
+- Any external website
+
+All task data remains stored locally in the browser.
+
 ## Features
 
 - Quick Paste + local auto-organize
@@ -65,6 +90,9 @@ The generated AI request asks only the critical questions first, such as target 
 - Copy + Open ChatGPT
 - Markdown download
 - JSON import/export backup
+- Service Worker offline cache
+- Web app manifest
+- Online / Offline status indicator
 
 ## Privacy
 
@@ -85,6 +113,9 @@ index.html
 styles.css
 router.css
 app.js
+enhancements.js
+sw.js
+manifest.webmanifest
 
 skills/
   requirements-clarifier/
