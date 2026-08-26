@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Task Planner</title>
-  <meta name="description" content="Prepare requirements, Docs and Figma context for AI task breakdown." />
+  <meta name="description" content="Route sparse requirements, Docs and Figma through focused planning skills." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="shell">
     <header class="hero">
       <div>
-        <span class="eyebrow">TEAM TASK BREAKDOWN</span>
+        <span class="eyebrow">S-TIER TEAM TASK PLANNER</span>
         <h1>Task Planner</h1>
-        <p>Paste thông tin thô hoặc nhập theo form. Web chuẩn hóa thành prompt Markdown để AI chia việc song song và hạn chế dẫm code.</p>
+        <p>Ném requirement thô, Doc hoặc Figma. Skill Router tự chọn luồng Clarify → Spec → Context → Interface/Design → Task Breakdown, chỉ dùng những skill thực sự cần.</p>
       </div>
       <div class="hero-actions">
         <div class="privacy">Local only · No backend · No API key</div>
@@ -26,7 +26,7 @@
       <section class="mode-bar card slim-card">
         <div>
           <strong>Break mode</strong>
-          <span>Quick mặc định để tránh overthinking.</span>
+          <span>Quick mặc định: ít task, ít hỏi, không overthinking.</span>
         </div>
         <div class="segmented" role="group" aria-label="Break mode">
           <button type="button" data-mode="quick" class="active">Quick</button>
@@ -50,9 +50,9 @@
     <section class="card quick-paste-card">
       <div class="section-title compact">
         <div><span class="step">00</span><h2>Quick Paste</h2></div>
-        <span class="optional">optional · fastest path</span>
+        <span class="optional">recommended</span>
       </div>
-      <textarea id="rawInput" rows="7" placeholder="Paste tất cả vào đây: requirement, Jira, Google Doc, Figma, note, team...\n\nVí dụ:\nFeature: Login revamp\nFigma: https://figma.com/...\nDoc: https://docs.google.com/...\nTeam: 3 devs\nYêu cầu: ..."></textarea>
+      <textarea id="rawInput" rows="7" placeholder="Ném tất cả vào đây. Ví dụ:\n\nTôi cần tạo 1 SDK để show log networking call API\nFigma: https://figma.com/...\nDoc: https://docs.google.com/...\nTeam: 3 devs"></textarea>
       <div class="quick-paste-footer">
         <div class="raw-tools">
           <button id="organizeBtn" class="primary" type="button">Auto organize</button>
@@ -71,43 +71,42 @@
         </div>
 
         <div class="two-col">
-          <label><span>Feature / Work item *</span><input id="feature" name="feature" required placeholder="Ví dụ: Revamp Login Greeting" /></label>
+          <label><span>Feature / Work item *</span><input id="feature" name="feature" required placeholder="Ví dụ: Networking Debug SDK" /></label>
           <label><span>Project</span><input id="project" name="project" placeholder="Project A / Internal Tool" /></label>
         </div>
 
         <label>
           <span>Requirement *</span>
-          <textarea id="requirement" name="requirement" required rows="9" placeholder="Yêu cầu, flow, business rule, acceptance criteria... Có thể để thô, AI sẽ chuẩn hóa."></textarea>
+          <textarea id="requirement" name="requirement" required rows="9" placeholder="Có thể chỉ nhập một câu ngắn. Skill Router sẽ quyết định cần hỏi thêm hay có thể break task ngay."></textarea>
           <small id="requirementCount">0 chars</small>
         </label>
 
         <div class="two-col">
-          <label>
-            <span>Docs / References</span>
-            <textarea id="docs" name="docs" rows="4" placeholder="Jira, Google Doc, API docs, ticket links... mỗi link một dòng"></textarea>
-          </label>
-          <label>
-            <span>Figma</span>
-            <textarea id="figma" name="figma" rows="4" placeholder="Figma file / section / node / flow links..."></textarea>
-          </label>
+          <label><span>Docs / References</span><textarea id="docs" name="docs" rows="4" placeholder="Jira, Google Doc, API docs, ticket links..."></textarea></label>
+          <label><span>Figma</span><textarea id="figma" name="figma" rows="4" placeholder="Figma file / section / node links..."></textarea></label>
         </div>
 
         <div class="two-col">
           <label><span>Team</span><input id="team" name="team" placeholder="3 devs — A, B, C" /></label>
-          <label><span>Desired ownership</span><input id="ownership" name="ownership" placeholder="Ví dụ: A API, B UI, C integration" /></label>
+          <label><span>Desired ownership</span><input id="ownership" name="ownership" placeholder="A API, B UI, C integration" /></label>
         </div>
 
         <details class="advanced">
           <summary>Advanced context <span>optional</span></summary>
           <div class="advanced-body">
-            <label><span>Constraints / Shared areas</span><textarea id="constraints" name="constraints" rows="5" placeholder="Shared screens/modules/files, legacy constraints, vùng không muốn nhiều dev cùng sửa..."></textarea></label>
-            <label><span>Additional notes</span><textarea id="notes" name="notes" rows="4" placeholder="Deadline, known risks, non-scope, thông tin bổ sung..."></textarea></label>
+            <label><span>Constraints / Shared areas</span><textarea id="constraints" name="constraints" rows="5" placeholder="Platform, stack, shared modules/files, legacy constraints, vùng không muốn nhiều dev cùng sửa..."></textarea></label>
+            <label><span>Additional notes</span><textarea id="notes" name="notes" rows="4" placeholder="Deadline, non-scope, known risks, expectations..."></textarea></label>
           </div>
         </details>
 
+        <label class="force-row">
+          <input id="forcePlan" type="checkbox" />
+          <span>Force task breakdown even when requirement is sparse</span>
+        </label>
+
         <div class="actions primary-actions">
           <div>
-            <button class="primary" type="submit">Generate request</button>
+            <button class="primary" type="submit">Generate AI request</button>
             <span class="shortcut">⌘/Ctrl + Enter</span>
           </div>
           <span id="saveState" class="save-state">Draft autosaved locally</span>
@@ -115,6 +114,15 @@
       </form>
 
       <aside class="right-column">
+        <section class="card router-card">
+          <div class="section-title compact">
+            <div><span class="step">S</span><h2>Skill Router</h2></div>
+            <span id="qualityBadge" class="quality-badge">Waiting</span>
+          </div>
+          <div id="skillStack" class="skill-stack"></div>
+          <p id="routerReason" class="router-reason">Nhập requirement để router đánh giá.</p>
+        </section>
+
         <section class="card preview-card">
           <div class="section-title">
             <div><span class="step">02</span><h2>Ready for AI</h2></div>
@@ -125,7 +133,7 @@
             <span>Requirement</span><span>Docs</span><span>Figma</span><span>Team</span>
           </div>
 
-          <pre id="preview" class="preview">Paste vào Quick Paste hoặc nhập form, sau đó Generate request.</pre>
+          <pre id="preview" class="preview">Paste vào Quick Paste hoặc nhập form. Router sẽ quyết định clarify trước hay plan ngay.</pre>
           <div class="actions action-grid">
             <button id="openChatBtn" class="primary" type="button" disabled>Copy + Open ChatGPT</button>
             <button id="copyBtn" type="button" disabled>Copy prompt</button>
@@ -135,9 +143,9 @@
 
         <section class="card hint-card">
           <span class="step">03</span>
-          <h2>Fast flow</h2>
-          <p><strong>Paste everything → Auto organize → Generate → Copy + Open ChatGPT.</strong></p>
-          <p>Quick ưu tiên ít task nhưng ownership rõ. AI không được tự bịa file/module nếu source không cung cấp.</p>
+          <h2>Behavior</h2>
+          <p><strong>Sparse:</strong> AI chỉ hỏi tối đa các câu critical, kèm default assumption; chưa bịa task.</p>
+          <p><strong>Ready:</strong> AI đọc source có thể truy cập, tạo spec-lite nội bộ rồi break task theo ownership và dependency.</p>
         </section>
 
         <section class="card history-card">
