@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Task Planner</title>
+  <meta name="description" content="Collect feature requirements and generate a clean task-breakdown request." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <span class="eyebrow">PRIVATE TASK INTAKE</span>
+        <h1>Task Planner</h1>
+        <p>Nhập requirement, Doc, Figma và context team. Web sẽ chuẩn hóa thành Markdown để gửi cho ChatGPT break task.</p>
+      </div>
+      <div class="privacy">Local only · No API key</div>
+    </header>
+
+    <section class="grid">
+      <form id="taskForm" class="card form-card">
+        <div class="section-title">
+          <div>
+            <span class="step">01</span>
+            <h2>Input</h2>
+          </div>
+          <button id="clearBtn" class="ghost" type="button">Clear</button>
+        </div>
+
+        <label>
+          <span>Feature / Work item *</span>
+          <input id="feature" name="feature" required placeholder="Ví dụ: Revamp Login Greeting" />
+        </label>
+
+        <label>
+          <span>Project</span>
+          <input id="project" name="project" placeholder="Ví dụ: MyVNPT / Project A / Internal Tool" />
+        </label>
+
+        <label>
+          <span>Requirement *</span>
+          <textarea id="requirement" name="requirement" required rows="8" placeholder="Mô tả yêu cầu, flow, business rule, expected behavior..."></textarea>
+        </label>
+
+        <div class="two-col">
+          <label>
+            <span>Docs / References</span>
+            <textarea id="docs" name="docs" rows="4" placeholder="Jira, Google Doc, API docs, screenshot links..."></textarea>
+          </label>
+          <label>
+            <span>Figma</span>
+            <textarea id="figma" name="figma" rows="4" placeholder="Figma file / node / flow links..."></textarea>
+          </label>
+        </div>
+
+        <label>
+          <span>Team</span>
+          <input id="team" name="team" placeholder="Ví dụ: 3 devs — A, B, C" />
+        </label>
+
+        <label>
+          <span>Constraints / Known ownership</span>
+          <textarea id="constraints" name="constraints" rows="5" placeholder="Ví dụ: tránh nhiều người sửa HomeVC; Dev A sở hữu API layer; giữ UIKit + XIB..."></textarea>
+        </label>
+
+        <label>
+          <span>Additional notes</span>
+          <textarea id="notes" name="notes" rows="4" placeholder="Thông tin bổ sung nếu có..."></textarea>
+        </label>
+
+        <div class="actions primary-actions">
+          <button class="primary" type="submit">Generate request</button>
+          <span id="saveState" class="save-state">Draft autosaved</span>
+        </div>
+      </form>
+
+      <aside class="right-column">
+        <section class="card preview-card">
+          <div class="section-title">
+            <div>
+              <span class="step">02</span>
+              <h2>Markdown Preview</h2>
+            </div>
+            <span id="requestId" class="request-id">—</span>
+          </div>
+          <pre id="preview" class="preview">Điền thông tin bên trái rồi chọn “Generate request”.</pre>
+          <div class="actions">
+            <button id="copyBtn" type="button" disabled>Copy for ChatGPT</button>
+            <button id="downloadBtn" type="button" disabled>Download .md</button>
+          </div>
+        </section>
+
+        <section class="card hint-card">
+          <span class="step">03</span>
+          <h2>Send to ChatGPT</h2>
+          <p>Sau khi copy, chỉ cần paste vào chat. Prompt đã yêu cầu break theo ownership, dependency, parallel work và giảm conflict.</p>
+          <code>Break task theo request dưới đây và trả về Markdown để gửi team.</code>
+        </section>
+
+        <section class="card history-card">
+          <div class="section-title compact">
+            <div>
+              <span class="step">H</span>
+              <h2>Recent drafts</h2>
+            </div>
+            <button id="clearHistoryBtn" class="ghost" type="button">Clear history</button>
+          </div>
+          <div id="history" class="history empty">Chưa có draft nào.</div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
