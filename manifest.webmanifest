@@ -1,0 +1,11 @@
+{
+  "name": "Task Planner",
+  "short_name": "Task Planner",
+  "description": "Offline-first task planning intake with adaptive skill routing.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#0b1020",
+  "lang": "vi"
+}
