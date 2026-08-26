@@ -2,31 +2,37 @@
 
 Static HTML/CSS/JS web app for preparing feature requirements, Docs, Figma links, team context, and constraints before sending them to ChatGPT for task breakdown.
 
-## Main flow
+## Fast flow
 
-1. Fill in Feature, Requirement, Docs, Figma, Team, and optional constraints.
-2. Choose **Quick** or **Standard** break mode.
-3. Click **Generate request**.
-4. Click **Copy + Open ChatGPT**.
-5. Paste and send.
+1. Paste everything into **Quick Paste**: requirement, Jira, Google Doc, Figma, team notes, etc.
+2. Click **Auto organize**.
+3. Review the structured fields if needed.
+4. Click **Generate request**.
+5. Click **Copy + Open ChatGPT**.
+6. Paste and send.
 
-The generated prompt asks AI to keep task count practical, maximize safe parallel work, assign clear ownership, reduce overlap, identify dependencies, and recommend merge order.
+You can still skip Quick Paste and fill the structured form manually.
 
 ## Features
 
+- Quick Paste: accepts mixed raw context and locally separates Figma links, references, requirement text, team, ownership, and constraints using simple heuristics.
+- Add local `.md`, `.txt`, `.json`, or `.csv` files into Quick Paste without uploading them anywhere.
+- Project Profiles: locally save reusable project/team/ownership/constraint defaults for different projects.
 - Quick mode: concise breakdown, minimal task count, avoids overthinking.
 - Standard mode: slightly more implementation detail.
+- Prompt rules explicitly prevent AI from inventing unsupported files/modules/Figma/API details.
 - Local autosave.
 - Recent draft history with load/delete.
 - Copy + Open ChatGPT.
 - Download Markdown.
-- Export/import JSON backup for moving drafts between browsers or machines.
+- Export/import JSON backup including project profiles and history.
 - No backend and no AI API key.
 
 ## Privacy
 
 - No requirement data is sent to GitHub by the app.
-- Drafts and recent history stay in browser `localStorage`.
+- Drafts, raw paste content, profiles, and recent history stay in browser `localStorage`.
+- Local source files are read using the browser File API only.
 - Export only happens when you explicitly download a JSON backup.
 - The repository can be public for GitHub Pages while task input remains local in your browser.
 
