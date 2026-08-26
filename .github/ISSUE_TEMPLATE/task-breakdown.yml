@@ -1,0 +1,85 @@
+name: Task Breakdown Request
+description: Submit a feature, doc, or Figma flow to break into team tasks
+title: "[BREAKDOWN] "
+labels: []
+body:
+  - type: input
+    id: feature
+    attributes:
+      label: Feature / Work item
+      description: Short name for the feature or change
+      placeholder: Example: Revamp Login Greeting
+    validations:
+      required: true
+
+  - type: textarea
+    id: requirement
+    attributes:
+      label: Requirement
+      description: Paste the main requirement or context here
+      placeholder: Describe what needs to be built or changed...
+    validations:
+      required: true
+
+  - type: textarea
+    id: docs
+    attributes:
+      label: Docs / References
+      description: Add links to product docs, technical docs, Jira tickets, API docs, screenshots, etc.
+      placeholder: |
+        - https://...
+        - https://...
+    validations:
+      required: false
+
+  - type: input
+    id: figma
+    attributes:
+      label: Figma
+      description: Figma file / section / node link if available
+      placeholder: https://www.figma.com/...
+    validations:
+      required: false
+
+  - type: input
+    id: team
+    attributes:
+      label: Team
+      description: Number of developers or names if assignment is needed
+      placeholder: Example: 3 devs — A, B, C
+    validations:
+      required: false
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints / Known ownership
+      description: Mention shared modules, files, legacy constraints, owners, deadlines, or areas that should not be touched
+      placeholder: |
+        Example:
+        - Dev A owns API layer
+        - Avoid multiple people editing HomeVC
+        - Existing UIKit + XIB must be preserved
+    validations:
+      required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional notes
+      description: Anything else useful for task splitting
+      placeholder: Optional
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: output
+    attributes:
+      label: Expected output
+      options:
+        - label: Break into clear developer tasks
+          required: true
+        - label: Identify parallel work and dependencies
+          required: true
+        - label: Minimize overlapping ownership / merge conflicts
+          required: true
