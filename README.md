@@ -2,36 +2,39 @@
 
 Static HTML/CSS/JS web app for preparing feature requirements, Docs, Figma links, team context, and constraints before sending them to ChatGPT for task breakdown.
 
-## Flow
+## Main flow
 
-1. Open the web app.
-2. Fill in Feature, Requirement, Docs, Figma, Team, Constraints, and Notes.
+1. Fill in Feature, Requirement, Docs, Figma, Team, and optional constraints.
+2. Choose **Quick** or **Standard** break mode.
 3. Click **Generate request**.
-4. Click **Copy for ChatGPT** and paste it into ChatGPT.
-5. ChatGPT returns Markdown with ownership, dependencies, parallel work, conflict notes, and merge order.
+4. Click **Copy + Open ChatGPT**.
+5. Paste and send.
 
-You can also use **Download .md**.
+The generated prompt asks AI to keep task count practical, maximize safe parallel work, assign clear ownership, reduce overlap, identify dependencies, and recommend merge order.
+
+## Features
+
+- Quick mode: concise breakdown, minimal task count, avoids overthinking.
+- Standard mode: slightly more implementation detail.
+- Local autosave.
+- Recent draft history with load/delete.
+- Copy + Open ChatGPT.
+- Download Markdown.
+- Export/import JSON backup for moving drafts between browsers or machines.
+- No backend and no AI API key.
 
 ## Privacy
 
-- No backend.
-- No AI API key.
-- No requirement data is sent to GitHub.
-- Drafts and recent history are stored only in browser `localStorage`.
-- The repository can therefore be public for GitHub Pages while your actual task input stays local in your browser.
+- No requirement data is sent to GitHub by the app.
+- Drafts and recent history stay in browser `localStorage`.
+- Export only happens when you explicitly download a JSON backup.
+- The repository can be public for GitHub Pages while task input remains local in your browser.
 
 ## GitHub Pages
 
-This project is fully static and can be hosted directly by GitHub Pages.
+The project is fully static and can be hosted directly by GitHub Pages from `main` → `/ (root)`.
 
-After making the repository **Public**:
-
-1. Open **Settings → Pages**.
-2. Under **Build and deployment**, choose **Deploy from a branch**.
-3. Select `main` and `/ (root)`.
-4. Save.
-
-The site URL will normally be:
+Site URL:
 
 `https://pth190501.github.io/task-planner/`
 
