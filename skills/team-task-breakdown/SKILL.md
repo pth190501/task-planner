@@ -1,67 +1,54 @@
 ---
 name: team-task-breakdown
-description: Break feature requirements, product docs, Figma designs, or GitHub intake issues into concise development tasks for a human software team, with clear ownership, dependencies, parallel work, and minimal overlap.
+description: Breaks clarified feature requirements, Docs, Figma designs, SDK/API boundaries, or project context into concise development tasks for a human software team with clear ownership, dependencies, parallel work, and minimal overlap. Use after critical ambiguity has been resolved or when the user explicitly asks to proceed with assumptions.
 ---
 
 # Team Task Breakdown
 
 ## Goal
 
-Turn a requirement, document, Figma flow, or GitHub issue into a concise Markdown plan that can be sent directly to a development team.
+Produce the smallest practical set of team tasks that can be implemented and reviewed with clear ownership and low merge-conflict risk.
 
-Prioritize:
-- clear responsibility
-- parallel work
-- minimal overlap
-- minimal merge conflicts
-- explicit dependencies
-- simple handoff
+## Router
 
-Do not over-plan.
+Before planning, apply only the skills that match the input:
 
-## Process
+- Sparse / ambiguous request → `requirements-clarifier`
+- Non-trivial feature → `spec-lite`
+- Docs / tickets / external references → `source-context`
+- Figma → `figma-context`
+- SDK / API / library / framework / public boundary → `interface-planner`
+- Then → `team-task-breakdown`
 
-1. Understand the complete feature before splitting.
-2. Identify major implementation areas.
-3. Split by independent ownership, not by tiny implementation steps.
-4. Check likely shared files/modules/screens.
-5. Prefer one primary owner for important shared areas.
-6. Identify tasks that can run in parallel.
-7. Identify integration tasks and merge order.
-8. Keep the final Markdown concise.
+Do not run every skill when it adds no value.
 
-## Splitting Rules
+## Planning Rules
 
-Prefer task boundaries such as:
-- API / data
-- standalone UI component
-- navigation / routing
-- analytics / tracking
-- integration
-- substantial migration / testing
+1. Understand the complete clarified feature before splitting.
+2. Split by independent ownership, not by tiny coding steps.
+3. Keep task count as small as practical; 2–5 meaningful tasks is a useful default for a normal feature.
+4. Maximize safe parallel work.
+5. Prefer one primary owner for each important shared code area.
+6. If two tasks heavily modify the same screen/module/file area, merge them or nominate one integration owner.
+7. Create dependencies only when technically necessary.
+8. Do not invent exact files, APIs, architecture, or design behavior not supported by context.
+9. Separate confirmed facts from assumptions.
+10. Keep the output concise enough to paste directly into a team channel or Jira.
 
-Avoid splits like:
-- create label
-- add constraints
-- bind text
+## Task Shape
 
-If two developers would likely modify the same important screen, ViewModel, XIB, router, manager, or shared configuration, reconsider the split.
+Each task should include only what helps assignment:
 
-Rule of thumb:
+- Owner
+- Can run in parallel
+- Depends on
+- Scope
+- Main ownership area
+- Done criteria
 
-> One important shared code area should have one primary owner within the feature whenever practical.
-
-## Figma
-
-When Figma is provided:
-- understand screens, states, interactions, navigation, and reusable components
-- do not create one task per frame
-- group frames by implementation ownership
-- prefer one owner for reusable components
+Avoid task boundaries such as individual labels, constraints, methods, or trivial file edits.
 
 ## Output
-
-Return Markdown in this shape:
 
 ```markdown
 # <Feature Name>
@@ -78,37 +65,33 @@ Return Markdown in this shape:
 
 **Scope**
 - ...
-- ...
 
 **Main ownership**
 - ...
 
 **Done when**
 - ...
-- ...
 
 ## Parallel Plan
-- TASK-01 + TASK-02 can start together
-- TASK-03 starts after ...
+- ...
 
 ## Shared Ownership / Conflict Notes
-- <area> → Dev X
-- <area> → Dev Y
+- ...
 
 ## Merge Order
-1. TASK-01
-2. TASK-02
-3. TASK-03
+1. ...
 
 ## Open Questions
-Only include questions that materially affect ownership, dependency, or scope.
+Only material questions, if any remain.
 ```
 
 ## Final Check
 
 Before returning:
-- merge tasks that are unnecessarily small
-- avoid assigning the same important area to multiple people
-- maximize safe parallel work
-- keep integration ownership clear
-- keep output usable by a real team
+
+- Are any tasks unnecessarily small?
+- Are two developers unknowingly owning the same important area?
+- Is integration ownership explicit?
+- Can more work safely run in parallel?
+- Are dependencies real rather than convenient?
+- Did the plan invent anything not present in the source?
