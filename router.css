@@ -1,0 +1,16 @@
+.router-card { padding: 18px 20px; }
+.skill-stack { display: flex; flex-wrap: wrap; gap: 8px; }
+.skill-chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,.1); border-radius: 999px; padding: 7px 10px; font-size: 11px; font-weight: 700; color: #dfe5f5; background: rgba(5,9,19,.42); }
+.skill-chip.clarify { border-color: rgba(255,190,92,.28); background: rgba(255,190,92,.08); }
+.skill-chip.interface { border-color: rgba(159,137,255,.32); background: rgba(159,137,255,.09); }
+.skill-chip.design { border-color: rgba(120,210,255,.28); background: rgba(120,210,255,.08); }
+.skill-chip.source { border-color: rgba(94,220,160,.24); background: rgba(94,220,160,.07); }
+.skill-chip.plan { border-color: rgba(142,162,255,.3); background: rgba(142,162,255,.09); }
+.router-reason { margin: 12px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.quality-badge { border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: 5px 9px; font-size: 10px; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; }
+.quality-badge.warn { color: #ffd49a; border-color: rgba(255,190,92,.3); background: rgba(255,190,92,.08); }
+.quality-badge.ready { color: #bfead2; border-color: rgba(94,220,160,.28); background: rgba(94,220,160,.08); }
+.force-row { display: flex; grid-template-columns: none; align-items: center; gap: 9px; border: 1px dashed var(--line); border-radius: 12px; padding: 10px 12px; margin: 0 0 16px; cursor: pointer; }
+.force-row input { width: auto; margin: 0; accent-color: #b8c4ff; }
+.force-row span { font-weight: 550; color: var(--muted); }
+@media (max-width: 760px) { .router-card { padding: 16px; border-radius: 18px; } }
