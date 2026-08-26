@@ -1,64 +1,97 @@
 # Task Planner
 
-Static HTML/CSS/JS web app for preparing feature requirements, Docs, Figma links, team context, and constraints before sending them to ChatGPT for task breakdown.
+Static HTML/CSS/JS task-intake web app with an adaptive **Skill Router**.
 
-## Fast flow
-
-1. Paste everything into **Quick Paste**: requirement, Jira, Google Doc, Figma, team notes, etc.
-2. Click **Auto organize**.
-3. Review the structured fields if needed.
-4. Click **Generate request**.
-5. Click **Copy + Open ChatGPT**.
-6. Paste and send.
-
-You can still skip Quick Paste and fill the structured form manually.
-
-## Features
-
-- Quick Paste: accepts mixed raw context and locally separates Figma links, references, requirement text, team, ownership, and constraints using simple heuristics.
-- Add local `.md`, `.txt`, `.json`, or `.csv` files into Quick Paste without uploading them anywhere.
-- Project Profiles: locally save reusable project/team/ownership/constraint defaults for different projects.
-- Quick mode: concise breakdown, minimal task count, avoids overthinking.
-- Standard mode: slightly more implementation detail.
-- Prompt rules explicitly prevent AI from inventing unsupported files/modules/Figma/API details.
-- Local autosave.
-- Recent draft history with load/delete.
-- Copy + Open ChatGPT.
-- Download Markdown.
-- Export/import JSON backup including project profiles and history.
-- No backend and no AI API key.
-
-## Privacy
-
-- No requirement data is sent to GitHub by the app.
-- Drafts, raw paste content, profiles, and recent history stay in browser `localStorage`.
-- Local source files are read using the browser File API only.
-- Export only happens when you explicitly download a JSON backup.
-- The repository can be public for GitHub Pages while task input remains local in your browser.
-
-## GitHub Pages
-
-The project is fully static and can be hosted directly by GitHub Pages from `main` → `/ (root)`.
-
-Site URL:
+Site:
 
 `https://pth190501.github.io/task-planner/`
 
-## Run locally
+## Main idea
 
-```bash
-python3 -m http.server 8080
+Do not force a task breakdown from bad input.
+
+```text
+Raw requirement / Docs / Figma
+          ↓
+      Skill Router
+          ↓
+Sparse? ───── yes ──→ Clarify critical gaps
+  │
+  no
+  ↓
+Spec-lite
+  ↓
+Read relevant sources
+  ↓
+Interface/Figma context when applicable
+  ↓
+Team Task Breakdown
 ```
 
-Then open `http://localhost:8080`.
+## Routed skill stack
+
+- `requirements-clarifier` — sparse / ambiguous requests
+- `spec-lite` — minimal implementation-facing spec
+- `source-context` — Docs / tickets / external sources
+- `figma-context` — screen, state, interaction, reusable component context
+- `interface-planner` — SDK / API / library / framework boundaries
+- `team-task-breakdown` — ownership, dependency, parallel work, conflict notes, merge order
+
+The router uses only relevant skills instead of applying the entire stack to every request.
+
+## Sparse requirement example
+
+Input:
+
+`Tôi cần tạo 1 SDK để show log networking call API`
+
+Expected route:
+
+`Clarify → Spec-lite → Interface Design → Task Breakdown`
+
+The generated AI request asks only the critical questions first, such as target platform or integration behavior, instead of inventing a full SDK architecture.
+
+## Features
+
+- Quick Paste + local auto-organize
+- Quick / Standard planning mode
+- Automatic sparse-context scoring
+- Visual Skill Router
+- Force-plan option when assumptions are acceptable
+- Figma / Docs detection
+- SDK/API/interface detection
+- Project profiles stored locally
+- Recent history
+- Copy + Open ChatGPT
+- Markdown download
+- JSON import/export backup
+
+## Privacy
+
+- No backend
+- No AI API key
+- Requirement data stays in browser `localStorage`
+- No task input is committed to GitHub by the page
+- Public GitHub Pages contains only the static app source
+
+## Skill sources
+
+See [`skills/SOURCES.md`](skills/SOURCES.md) for the public skill repositories and patterns used as inspiration.
 
 ## Files
 
 ```text
 index.html
 styles.css
+router.css
 app.js
+
 skills/
+  requirements-clarifier/
+  spec-lite/
+  source-context/
+  figma-context/
+  interface-planner/
   team-task-breakdown/
-    SKILL.md
+  SOURCES.md
 ```
