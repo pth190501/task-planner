@@ -6,6 +6,7 @@
   <title>Task Planner</title>
   <meta name="description" content="Route sparse requirements, Docs and Figma through focused planning skills." />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="router.css" />
 </head>
 <body>
   <main class="shell">
@@ -24,141 +25,46 @@
 
     <section class="toolbar-row">
       <section class="mode-bar card slim-card">
-        <div>
-          <strong>Break mode</strong>
-          <span>Quick mặc định: ít task, ít hỏi, không overthinking.</span>
-        </div>
-        <div class="segmented" role="group" aria-label="Break mode">
-          <button type="button" data-mode="quick" class="active">Quick</button>
-          <button type="button" data-mode="standard">Standard</button>
-        </div>
+        <div><strong>Break mode</strong><span>Quick mặc định: ít task, ít hỏi, không overthinking.</span></div>
+        <div class="segmented" role="group" aria-label="Break mode"><button type="button" data-mode="quick" class="active">Quick</button><button type="button" data-mode="standard">Standard</button></div>
       </section>
-
       <section class="profile-bar card slim-card">
-        <div class="profile-copy">
-          <strong>Project profile</strong>
-          <span>Lưu team / ownership / constraint dùng lại.</span>
-        </div>
-        <div class="profile-controls">
-          <select id="profileSelect" aria-label="Project profile"><option value="">No profile</option></select>
-          <button id="saveProfileBtn" type="button">Save profile</button>
-          <button id="deleteProfileBtn" class="ghost" type="button" disabled>Delete</button>
-        </div>
+        <div class="profile-copy"><strong>Project profile</strong><span>Lưu team / ownership / constraint dùng lại.</span></div>
+        <div class="profile-controls"><select id="profileSelect" aria-label="Project profile"><option value="">No profile</option></select><button id="saveProfileBtn" type="button">Save profile</button><button id="deleteProfileBtn" class="ghost" type="button" disabled>Delete</button></div>
       </section>
     </section>
 
     <section class="card quick-paste-card">
-      <div class="section-title compact">
-        <div><span class="step">00</span><h2>Quick Paste</h2></div>
-        <span class="optional">recommended</span>
-      </div>
+      <div class="section-title compact"><div><span class="step">00</span><h2>Quick Paste</h2></div><span class="optional">recommended</span></div>
       <textarea id="rawInput" rows="7" placeholder="Ném tất cả vào đây. Ví dụ:\n\nTôi cần tạo 1 SDK để show log networking call API\nFigma: https://figma.com/...\nDoc: https://docs.google.com/...\nTeam: 3 devs"></textarea>
-      <div class="quick-paste-footer">
-        <div class="raw-tools">
-          <button id="organizeBtn" class="primary" type="button">Auto organize</button>
-          <label class="file-label">Add .md/.txt<input id="rawFileInput" type="file" accept=".md,.txt,.json,.csv,text/plain,text/markdown,application/json" multiple hidden /></label>
-          <button id="clearRawBtn" class="ghost" type="button">Clear paste</button>
-        </div>
-        <span id="rawStatus" class="raw-status">Paste raw context then Auto organize.</span>
-      </div>
+      <div class="quick-paste-footer"><div class="raw-tools"><button id="organizeBtn" class="primary" type="button">Auto organize</button><label class="file-label">Add .md/.txt<input id="rawFileInput" type="file" accept=".md,.txt,.json,.csv,text/plain,text/markdown,application/json" multiple hidden /></label><button id="clearRawBtn" class="ghost" type="button">Clear paste</button></div><span id="rawStatus" class="raw-status">Paste raw context then Auto organize.</span></div>
     </section>
 
     <section class="grid">
       <form id="taskForm" class="card form-card">
-        <div class="section-title">
-          <div><span class="step">01</span><h2>Structured Input</h2></div>
-          <button id="clearBtn" class="ghost" type="button">Clear form</button>
-        </div>
-
-        <div class="two-col">
-          <label><span>Feature / Work item *</span><input id="feature" name="feature" required placeholder="Ví dụ: Networking Debug SDK" /></label>
-          <label><span>Project</span><input id="project" name="project" placeholder="Project A / Internal Tool" /></label>
-        </div>
-
-        <label>
-          <span>Requirement *</span>
-          <textarea id="requirement" name="requirement" required rows="9" placeholder="Có thể chỉ nhập một câu ngắn. Skill Router sẽ quyết định cần hỏi thêm hay có thể break task ngay."></textarea>
-          <small id="requirementCount">0 chars</small>
-        </label>
-
-        <div class="two-col">
-          <label><span>Docs / References</span><textarea id="docs" name="docs" rows="4" placeholder="Jira, Google Doc, API docs, ticket links..."></textarea></label>
-          <label><span>Figma</span><textarea id="figma" name="figma" rows="4" placeholder="Figma file / section / node links..."></textarea></label>
-        </div>
-
-        <div class="two-col">
-          <label><span>Team</span><input id="team" name="team" placeholder="3 devs — A, B, C" /></label>
-          <label><span>Desired ownership</span><input id="ownership" name="ownership" placeholder="A API, B UI, C integration" /></label>
-        </div>
-
-        <details class="advanced">
-          <summary>Advanced context <span>optional</span></summary>
-          <div class="advanced-body">
-            <label><span>Constraints / Shared areas</span><textarea id="constraints" name="constraints" rows="5" placeholder="Platform, stack, shared modules/files, legacy constraints, vùng không muốn nhiều dev cùng sửa..."></textarea></label>
-            <label><span>Additional notes</span><textarea id="notes" name="notes" rows="4" placeholder="Deadline, non-scope, known risks, expectations..."></textarea></label>
-          </div>
-        </details>
-
-        <label class="force-row">
-          <input id="forcePlan" type="checkbox" />
-          <span>Force task breakdown even when requirement is sparse</span>
-        </label>
-
-        <div class="actions primary-actions">
-          <div>
-            <button class="primary" type="submit">Generate AI request</button>
-            <span class="shortcut">⌘/Ctrl + Enter</span>
-          </div>
-          <span id="saveState" class="save-state">Draft autosaved locally</span>
-        </div>
+        <div class="section-title"><div><span class="step">01</span><h2>Structured Input</h2></div><button id="clearBtn" class="ghost" type="button">Clear form</button></div>
+        <div class="two-col"><label><span>Feature / Work item *</span><input id="feature" name="feature" required placeholder="Ví dụ: Networking Debug SDK" /></label><label><span>Project</span><input id="project" name="project" placeholder="Project A / Internal Tool" /></label></div>
+        <label><span>Requirement *</span><textarea id="requirement" name="requirement" required rows="9" placeholder="Có thể chỉ nhập một câu ngắn. Skill Router sẽ quyết định cần hỏi thêm hay có thể break task ngay."></textarea><small id="requirementCount">0 chars</small></label>
+        <div class="two-col"><label><span>Docs / References</span><textarea id="docs" name="docs" rows="4" placeholder="Jira, Google Doc, API docs, ticket links..."></textarea></label><label><span>Figma</span><textarea id="figma" name="figma" rows="4" placeholder="Figma file / section / node links..."></textarea></label></div>
+        <div class="two-col"><label><span>Team</span><input id="team" name="team" placeholder="3 devs — A, B, C" /></label><label><span>Desired ownership</span><input id="ownership" name="ownership" placeholder="A API, B UI, C integration" /></label></div>
+        <details class="advanced"><summary>Advanced context <span>optional</span></summary><div class="advanced-body"><label><span>Constraints / Shared areas</span><textarea id="constraints" name="constraints" rows="5" placeholder="Platform, stack, shared modules/files, legacy constraints, vùng không muốn nhiều dev cùng sửa..."></textarea></label><label><span>Additional notes</span><textarea id="notes" name="notes" rows="4" placeholder="Deadline, non-scope, known risks, expectations..."></textarea></label></div></details>
+        <label class="force-row"><input id="forcePlan" type="checkbox" /><span>Force task breakdown even when requirement is sparse</span></label>
+        <div class="actions primary-actions"><div><button class="primary" type="submit">Generate AI request</button><span class="shortcut">⌘/Ctrl + Enter</span></div><span id="saveState" class="save-state">Draft autosaved locally</span></div>
       </form>
 
       <aside class="right-column">
-        <section class="card router-card">
-          <div class="section-title compact">
-            <div><span class="step">S</span><h2>Skill Router</h2></div>
-            <span id="qualityBadge" class="quality-badge">Waiting</span>
-          </div>
-          <div id="skillStack" class="skill-stack"></div>
-          <p id="routerReason" class="router-reason">Nhập requirement để router đánh giá.</p>
-        </section>
-
+        <section class="card router-card"><div class="section-title compact"><div><span class="step">S</span><h2>Skill Router</h2></div><span id="qualityBadge" class="quality-badge">Waiting</span></div><div id="skillStack" class="skill-stack"></div><p id="routerReason" class="router-reason">Nhập requirement để router đánh giá.</p></section>
         <section class="card preview-card">
-          <div class="section-title">
-            <div><span class="step">02</span><h2>Ready for AI</h2></div>
-            <span id="requestId" class="request-id">—</span>
-          </div>
-
-          <div id="sourceStatus" class="source-status">
-            <span>Requirement</span><span>Docs</span><span>Figma</span><span>Team</span>
-          </div>
-
+          <div class="section-title"><div><span class="step">02</span><h2>Ready for AI</h2></div><span id="requestId" class="request-id">—</span></div>
+          <div id="sourceStatus" class="source-status"><span>Requirement</span><span>Docs</span><span>Figma</span><span>Team</span></div>
           <pre id="preview" class="preview">Paste vào Quick Paste hoặc nhập form. Router sẽ quyết định clarify trước hay plan ngay.</pre>
-          <div class="actions action-grid">
-            <button id="openChatBtn" class="primary" type="button" disabled>Copy + Open ChatGPT</button>
-            <button id="copyBtn" type="button" disabled>Copy prompt</button>
-            <button id="downloadBtn" type="button" disabled>Download .md</button>
-          </div>
+          <div class="actions action-grid"><button id="openChatBtn" class="primary" type="button" disabled>Copy + Open ChatGPT</button><button id="copyBtn" type="button" disabled>Copy prompt</button><button id="downloadBtn" type="button" disabled>Download .md</button></div>
         </section>
-
-        <section class="card hint-card">
-          <span class="step">03</span>
-          <h2>Behavior</h2>
-          <p><strong>Sparse:</strong> AI chỉ hỏi tối đa các câu critical, kèm default assumption; chưa bịa task.</p>
-          <p><strong>Ready:</strong> AI đọc source có thể truy cập, tạo spec-lite nội bộ rồi break task theo ownership và dependency.</p>
-        </section>
-
-        <section class="card history-card">
-          <div class="section-title compact">
-            <div><span class="step">H</span><h2>Recent drafts</h2></div>
-            <button id="clearHistoryBtn" class="ghost" type="button">Clear all</button>
-          </div>
-          <div id="history" class="history empty">Chưa có draft nào.</div>
-        </section>
+        <section class="card hint-card"><span class="step">03</span><h2>Behavior</h2><p><strong>Sparse:</strong> AI chỉ hỏi tối đa các câu critical, kèm default assumption; chưa bịa task.</p><p><strong>Ready:</strong> AI đọc source có thể truy cập, tạo spec-lite nội bộ rồi break task theo ownership và dependency.</p></section>
+        <section class="card history-card"><div class="section-title compact"><div><span class="step">H</span><h2>Recent drafts</h2></div><button id="clearHistoryBtn" class="ghost" type="button">Clear all</button></div><div id="history" class="history empty">Chưa có draft nào.</div></section>
       </aside>
     </section>
   </main>
-
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
 </body>
