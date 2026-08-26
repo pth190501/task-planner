@@ -1,11 +1,13 @@
-const CACHE_NAME = 'task-planner-offline-v1';
+const CACHE_NAME = 'task-planner-offline-v2';
 const APP_SHELL = [
   './',
   './index.html',
   './styles.css',
   './router.css',
+  './live-planner.css',
   './app.js',
   './enhancements.js',
+  './live-planner.js',
   './manifest.webmanifest'
 ];
 
