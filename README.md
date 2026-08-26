@@ -1,36 +1,56 @@
-# Task Planner
+# Task Planner Web
 
-Private intake repo for collecting feature requirements and breaking them into development tasks.
+A small private-source web app for collecting feature requirements, Docs, Figma links, team context, and constraints before sending them to ChatGPT for task breakdown.
 
-## Flow
+## Current flow
 
-1. Open **Issues**.
-2. Create a new **Task Breakdown Request**.
-3. Fill in requirement, docs, Figma, team context, and constraints.
-4. Submit the issue.
-5. Ask ChatGPT:
+1. Open the web app.
+2. Fill in Feature, Requirement, Docs, Figma, Team, Constraints, and Notes.
+3. Click **Generate request**.
+4. Review the generated Markdown.
+5. Click **Copy for ChatGPT** and paste it into ChatGPT.
+6. ChatGPT breaks the work into team tasks with ownership, dependencies, parallel work, conflict notes, and merge order.
 
-   `Break task pth190501/task-planner issue #<number>`
+## Privacy in v1
 
-ChatGPT can read the issue through the connected GitHub integration and return a Markdown task breakdown.
+- No OpenAI / Anthropic / Gemini API key is stored in the page.
+- Form data is not sent to a server.
+- Drafts and recent history are stored only in browser `localStorage`.
+- Downloaded Markdown stays on your machine.
 
-## Goal
+## Run locally
 
-- Keep requirements in one place.
-- Reuse across different projects.
-- Split work for multiple developers.
-- Reduce overlapping ownership and merge conflicts.
-- Keep output concise enough to send directly to the team.
+Clone the repository and open `index.html` in a browser, or serve it with any static HTTP server.
 
-## Structure
+Example with Python:
+
+```bash
+python3 -m http.server 8080
+```
+
+Then open `http://localhost:8080`.
+
+## GitHub Pages
+
+The app is fully static (`index.html`, `styles.css`, `app.js`) and can be published from the repository root with GitHub Pages.
+
+For a personal account, GitHub Pages from a private repository requires a GitHub plan that supports Pages for private repositories. A privately published Pages site itself requires GitHub Enterprise Cloud access control; otherwise treat the published UI as public and rely on the current local-only storage design for submitted data.
+
+## Files
 
 ```text
-.github/
-  ISSUE_TEMPLATE/
-    config.yml
-    task-breakdown.yml
+index.html
+styles.css
+app.js
 
 skills/
   team-task-breakdown/
     SKILL.md
+
+.github/
+  ISSUE_TEMPLATE/        # fallback intake flow
 ```
+
+## Planned next step
+
+If the web workflow feels right, add optional authenticated persistence so submissions can be stored centrally and referenced by Request ID without putting AI API keys in the frontend.
