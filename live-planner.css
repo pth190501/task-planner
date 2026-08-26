@@ -1,0 +1,8 @@
+body[data-connection="offline"] .privacy::after { content: " · Offline"; color: #ffd08a; }
+body[data-connection="online"] .privacy::after { content: " · Online"; color: #9fe3b1; }
+.preview-card .request-id { font-weight: 700; }
+.preview-card .request-id::before { content: "LOCAL "; opacity: .65; }
+.quality-badge.good { color: #9fe3b1; border-color: rgba(159,227,177,.28); background: rgba(159,227,177,.08); }
+.quality-badge.warn { color: #ffd08a; border-color: rgba(255,208,138,.28); background: rgba(255,208,138,.08); }
+.preview { min-height: 520px; }
+@media (max-width: 980px) { .preview { min-height: 420px; } }
