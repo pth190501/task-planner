@@ -1,10 +1,12 @@
 const STORAGE_KEY = 'task-planner:draft:v1';
 const HISTORY_KEY = 'task-planner:history:v1';
 const HISTORY_LIMIT = 8;
+const REPO = 'pth190501/task-planner';
 
 const form = document.getElementById('taskForm');
 const preview = document.getElementById('preview');
 const requestIdEl = document.getElementById('requestId');
+const githubBtn = document.getElementById('githubBtn');
 const copyBtn = document.getElementById('copyBtn');
 const downloadBtn = document.getElementById('downloadBtn');
 const clearBtn = document.getElementById('clearBtn');
@@ -19,19 +21,14 @@ let currentRequestId = '';
 let saveTimer;
 
 const getValues = () => Object.fromEntries(fields.map(id => [id, document.getElementById(id).value.trim()]));
-
-const setValues = values => {
-  fields.forEach(id => {
-    const node = document.getElementById(id);
-    node.value = values?.[id] || '';
-  });
-};
+const setValues = values => fields.forEach(id => document.getElementById(id).value = values?.[id] || '');
+const setActions = enabled => [githubBtn, copyBtn, downloadBtn].forEach(button => button.disabled = !enabled);
 
 const showToast = message => {
   toast.textContent = message;
   toast.classList.add('show');
   clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => toast.classList.remove('show'), 1600);
+  showToast.timer = setTimeout(() => toast.classList.remove('show'), 1700);
 };
 
 const makeRequestId = () => {
@@ -40,20 +37,16 @@ const makeRequestId = () => {
   return `REQ-${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
 };
 
-const asBulletLines = value => {
-  if (!value) return '- None provided';
-  return value
-    .split('\n')
-    .map(v => v.trim())
-    .filter(Boolean)
-    .map(v => v.startsWith('- ') ? v : `- ${v}`)
-    .join('\n');
-};
+const asBulletLines = value => value
+  .split('\n')
+  .map(v => v.trim())
+  .filter(Boolean)
+  .map(v => v.startsWith('- ') ? v : `- ${v}`)
+  .join('\n');
 
-const section = (title, value, mode = 'text') => {
+const section = (title, value, bullets = false) => {
   if (!value) return '';
-  const body = mode === 'bullets' ? asBulletLines(value) : value;
-  return `\n## ${title}\n${body}\n`;
+  return `\n## ${title}\n${bullets ? asBulletLines(value) : value}\n`;
 };
 
 const buildMarkdown = values => {
@@ -70,8 +63,8 @@ const buildMarkdown = values => {
     '',
     '## Requirement',
     values.requirement,
-    section('Docs / References', values.docs, 'bullets'),
-    section('Figma', values.figma, 'bullets'),
+    section('Docs / References', values.docs, true),
+    section('Figma', values.figma, true),
     section('Constraints / Known Ownership', values.constraints),
     section('Additional Notes', values.notes),
     '## Breakdown Rules',
@@ -89,7 +82,7 @@ const buildMarkdown = values => {
     '- Parallel execution plan',
     '- Shared ownership / conflict notes',
     '- Merge order',
-    '- Only material open questions',
+    '- Only material open questions'
   ].filter(line => line !== '');
 
   return { id, markdown: lines.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n' };
@@ -123,9 +116,18 @@ const addHistory = (values, id, markdown) => {
   renderHistory();
 };
 
+const loadGenerated = (markdown, id) => {
+  currentMarkdown = markdown;
+  currentRequestId = id;
+  preview.textContent = markdown;
+  requestIdEl.textContent = id;
+  setActions(true);
+};
+
 const renderHistory = () => {
   const history = readHistory();
   historyEl.innerHTML = '';
+
   if (!history.length) {
     historyEl.className = 'history empty';
     historyEl.textContent = 'Chưa có draft nào.';
@@ -152,12 +154,7 @@ const renderHistory = () => {
     load.textContent = 'Load';
     load.addEventListener('click', () => {
       setValues(item.values);
-      currentMarkdown = item.markdown;
-      currentRequestId = item.id;
-      preview.textContent = currentMarkdown;
-      requestIdEl.textContent = currentRequestId;
-      copyBtn.disabled = false;
-      downloadBtn.disabled = false;
+      loadGenerated(item.markdown, item.id);
       saveDraft();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       showToast('Draft loaded');
@@ -176,15 +173,34 @@ form.addEventListener('submit', event => {
 
   const values = getValues();
   const output = buildMarkdown(values);
-  currentMarkdown = output.markdown;
-  currentRequestId = output.id;
-  preview.textContent = currentMarkdown;
-  requestIdEl.textContent = currentRequestId;
-  copyBtn.disabled = false;
-  downloadBtn.disabled = false;
-  addHistory(values, currentRequestId, currentMarkdown);
+  loadGenerated(output.markdown, output.id);
+  addHistory(values, output.id, output.markdown);
   saveDraft();
   showToast('Request generated');
+});
+
+githubBtn.addEventListener('click', async () => {
+  if (!currentMarkdown) return;
+
+  const values = getValues();
+  const title = `[BREAKDOWN] ${values.feature}`;
+  const base = `https://github.com/${REPO}/issues/new`;
+  const fullUrl = `${base}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(currentMarkdown)}`;
+
+  // Avoid very long GitHub/browser query strings. If large, copy the body and open a blank issue with title only.
+  if (fullUrl.length > 7000) {
+    try {
+      await navigator.clipboard.writeText(currentMarkdown);
+      window.open(`${base}?title=${encodeURIComponent(title)}`, '_blank', 'noopener');
+      showToast('Issue opened · Markdown copied');
+    } catch (_) {
+      showToast('Request quá dài — dùng Download .md');
+    }
+    return;
+  }
+
+  window.open(fullUrl, '_blank', 'noopener');
+  showToast('Private GitHub Issue opened');
 });
 
 copyBtn.addEventListener('click', async () => {
@@ -194,7 +210,7 @@ copyBtn.addEventListener('click', async () => {
     await navigator.clipboard.writeText(prompt);
     showToast('Copied for ChatGPT');
   } catch (_) {
-    showToast('Không copy được — hãy copy từ preview');
+    showToast('Không copy được — copy từ preview');
   }
 });
 
@@ -225,8 +241,7 @@ clearBtn.addEventListener('click', () => {
   currentRequestId = '';
   preview.textContent = 'Điền thông tin bên trái rồi chọn “Generate request”.';
   requestIdEl.textContent = '—';
-  copyBtn.disabled = true;
-  downloadBtn.disabled = true;
+  setActions(false);
   showToast('Form cleared');
 });
 
