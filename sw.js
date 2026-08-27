@@ -1,4 +1,4 @@
-const CACHE_NAME = 'task-planner-offline-v4';
+const CACHE_NAME = 'task-planner-offline-v5';
 const APP_SHELL = [
   './',
   './index.html',
@@ -11,6 +11,7 @@ const APP_SHELL = [
   './enhancements.js',
   './live-planner.js',
   './skill-engine.js',
+  './source-mapper.js',
   './agent-prompts.js',
   './task-prompts.js',
   './update-manager.js',
