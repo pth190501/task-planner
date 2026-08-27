@@ -17,13 +17,13 @@
   <main class="shell">
     <header class="hero">
       <div>
-        <span class="eyebrow">S-TIER · LIVE OFFLINE TASK PLANNER</span>
+        <span class="eyebrow">S-TIER · FIGMA-FIRST TEAM TASK PLANNER</span>
         <h1>Task Planner</h1>
-        <p>Nhập hoặc paste requirement là Markdown task breakdown xuất hiện ngay. Planner chạy local/offline, route theo skill registry và xuất prompt riêng cho Claude, Codex, Antigravity hoặc ChatGPT.</p>
+        <p>Nhập requirement, Figma và tài liệu để chia đầu việc theo phân vùng chức năng/flow ownership. Khi có Figma, planner ưu tiên Home / Home Group / các vùng tương tự thay vì tách API/UI/Integration máy móc.</p>
       </div>
       <div class="hero-actions">
         <div class="version-bar">
-          <span id="appVersion" class="app-version">v2.0.0</span>
+          <span id="appVersion" class="app-version">v2.1.0</span>
           <span id="updateStatus" class="app-version">Checking app…</span>
         </div>
         <button id="checkUpdateBtn" class="ghost" type="button">Check update</button>
@@ -40,7 +40,7 @@
 
     <section class="toolbar-row">
       <section class="mode-bar card slim-card">
-        <div><strong>Break mode</strong><span>Quick: ít task, ownership rõ. Standard: chi tiết hơn.</span></div>
+        <div><strong>Break mode</strong><span>Quick: giao việc ngắn gọn. Standard: thêm scope / done criteria.</span></div>
         <div class="segmented" role="group" aria-label="Break mode"><button type="button" data-mode="quick" class="active">Quick</button><button type="button" data-mode="standard">Standard</button></div>
       </section>
       <section class="profile-bar card slim-card">
@@ -51,18 +51,18 @@
 
     <section class="card quick-paste-card">
       <div class="section-title compact"><div><span class="step">00</span><h2>Quick Paste</h2></div><span class="optional">live preview</span></div>
-      <textarea id="rawInput" rows="7" placeholder="Chỉ cần gõ hoặc paste vào đây, preview task sẽ chạy ngay. Ví dụ:\n\nTôi cần tạo 1 SDK để show log networking call API\nFigma: https://figma.com/...\nDoc: https://docs.google.com/...\nTeam: 3 devs"></textarea>
-      <div class="quick-paste-footer"><div class="raw-tools"><button id="organizeBtn" class="primary" type="button">Auto organize</button><label class="file-label">Add .md/.txt<input id="rawFileInput" type="file" accept=".md,.txt,.json,.csv,text/plain,text/markdown,application/json" multiple hidden /></label><button id="clearRawBtn" class="ghost" type="button">Clear paste</button></div><span id="rawStatus" class="raw-status">Không cần Generate — preview cập nhật khi bạn nhập.</span></div>
+      <textarea id="rawInput" rows="7" placeholder="Paste requirement, Figma, tài liệu, team...\n\nVí dụ:\nRevamp Home\nFigma: https://figma.com/...\nDoc: https://docs.google.com/...\nTeam: 3 devs"></textarea>
+      <div class="quick-paste-footer"><div class="raw-tools"><button id="organizeBtn" class="primary" type="button">Auto organize</button><label class="file-label">Add .md/.txt<input id="rawFileInput" type="file" accept=".md,.txt,.json,.csv,text/plain,text/markdown,application/json" multiple hidden /></label><button id="clearRawBtn" class="ghost" type="button">Clear paste</button></div><span id="rawStatus" class="raw-status">Có Figma → planner ưu tiên chia theo vùng chức năng.</span></div>
     </section>
 
     <section class="grid">
       <form id="taskForm" class="card form-card">
         <div class="section-title"><div><span class="step">01</span><h2>Structured Input</h2></div><button id="clearBtn" class="ghost" type="button">Clear form</button></div>
         <div class="two-col"><label><span>Feature / Work item</span><input id="feature" name="feature" placeholder="Không bắt buộc — planner tự suy ra từ requirement" /></label><label><span>Project</span><input id="project" name="project" placeholder="Project A / Internal Tool" /></label></div>
-        <label><span>Requirement *</span><textarea id="requirement" name="requirement" rows="9" placeholder="Có thể chỉ nhập một câu ngắn. Task Markdown sẽ preview ngay."></textarea><small id="requirementCount">0 chars</small></label>
-        <div class="two-col"><label><span>Docs / References</span><textarea id="docs" name="docs" rows="4" placeholder="Jira, Google Doc, API docs, ticket links..."></textarea></label><label><span>Figma</span><textarea id="figma" name="figma" rows="4" placeholder="Figma file / section / node links..."></textarea></label></div>
-        <div class="two-col"><label><span>Team</span><input id="team" name="team" placeholder="3 devs — A, B, C" /></label><label><span>Desired ownership</span><input id="ownership" name="ownership" placeholder="A API, B UI, C integration" /></label></div>
-        <details class="advanced"><summary>Advanced context <span>optional</span></summary><div class="advanced-body"><label><span>Constraints / Shared areas</span><textarea id="constraints" name="constraints" rows="5" placeholder="Platform, stack, shared modules/files, legacy constraints, vùng không muốn nhiều dev cùng sửa..."></textarea></label><label><span>Additional notes</span><textarea id="notes" name="notes" rows="4" placeholder="Deadline, non-scope, known risks, expectations..."></textarea></label></div></details>
+        <label><span>Requirement *</span><textarea id="requirement" name="requirement" rows="9" placeholder="Mục tiêu, business rule, phạm vi tổng thể..."></textarea><small id="requirementCount">0 chars</small></label>
+        <div class="two-col"><label><span>Docs / References</span><textarea id="docs" name="docs" rows="4" placeholder="Jira, Google Doc, API docs, ticket links... Có thể paste thêm outline mục 1, 2, 3."></textarea></label><label><span>Figma</span><textarea id="figma" name="figma" rows="4" placeholder="Figma file / section / node links... Có thể paste thêm tên vùng/frame nếu đã extract."></textarea></label></div>
+        <div class="two-col"><label><span>Team</span><input id="team" name="team" placeholder="3 devs — A, B, C" /></label><label><span>Desired ownership</span><input id="ownership" name="ownership" placeholder="A Home, B Home Group, C shared/integration" /></label></div>
+        <details class="advanced"><summary>Advanced context <span>optional</span></summary><div class="advanced-body"><label><span>Constraints / Shared areas</span><textarea id="constraints" name="constraints" rows="5" placeholder="Platform, stack, shared components, vùng dễ conflict, legacy constraints..."></textarea></label><label><span>Additional notes</span><textarea id="notes" name="notes" rows="4" placeholder="Deadline, non-scope, known risks, expectations..."></textarea></label></div></details>
         <label class="force-row"><input id="forcePlan" type="checkbox" /><span>Force task breakdown even when requirement is sparse</span></label>
         <div class="actions primary-actions"><div><button class="primary" type="submit">Save plan snapshot</button><span class="shortcut">Preview luôn chạy live</span></div><span id="saveState" class="save-state">Live preview · autosaved locally</span></div>
       </form>
@@ -73,7 +73,7 @@
         <section class="card preview-card">
           <div class="section-title"><div><span class="step">02</span><h2>Live Markdown Plan</h2></div><span id="requestId" class="request-id">LIVE</span></div>
           <div id="sourceStatus" class="source-status"><span>Requirement</span><span>Docs</span><span>Figma</span><span>Team</span></div>
-          <pre id="preview" class="preview">Nhập hoặc paste requirement — Markdown task plan sẽ xuất hiện ngay tại đây.</pre>
+          <pre id="preview" class="preview">Nhập requirement/Figma — Markdown task plan sẽ xuất hiện ngay tại đây.</pre>
           <div class="actions action-grid"><button id="openChatBtn" class="primary" type="button" disabled>Copy MD + Open ChatGPT</button><button id="copyBtn" type="button" disabled>Copy MD</button><button id="downloadBtn" type="button" disabled>Download .md</button></div>
         </section>
 
@@ -91,11 +91,11 @@
 
         <section class="card task-agent-section">
           <div class="section-title compact"><div><span class="step">T</span><h2>Per-task Agent Prompts</h2></div><span class="optional">parallel agents</span></div>
-          <p class="router-reason">Giao từng task độc lập cho Codex / Claude / Antigravity / ChatGPT mà không gửi toàn bộ plan cho mỗi agent.</p>
+          <p class="router-reason">Sau khi Figma được map thành các vùng ownership, có thể giao từng vùng cho Codex / Claude / Antigravity / ChatGPT.</p>
           <div id="taskAgentGrid" class="task-agent-grid empty">Nhập requirement để task prompt riêng xuất hiện.</div>
         </section>
 
-        <section class="card hint-card"><span class="step">03</span><h2>Local-first flow</h2><p><strong>Input → Skill Registry → Live Markdown → per-task agent prompts.</strong> Generate plan/prompt chạy local và offline.</p><p>Figma/Doc chỉ được đọc nội dung thật khi agent có kết nối phù hợp; Source Confidence trong plan sẽ nói rõ linked source nào chưa được inspect.</p></section>
+        <section class="card hint-card"><span class="step">03</span><h2>Figma-first flow</h2><p><strong>Figma → phân vùng chức năng → map tài liệu → giao member.</strong> API/UI/data/interaction chỉ là chi tiết bên trong ownership của từng vùng.</p><p>Nếu chỉ có Figma URL, local web không tự bịa structure. Dùng Source Mapping Prompt với agent có connector, hoặc paste Figma outline để preview offline.</p></section>
         <section class="card history-card"><div class="section-title compact"><div><span class="step">H</span><h2>Recent drafts</h2></div><button id="clearHistoryBtn" class="ghost" type="button">Clear all</button></div><div id="history" class="history empty">Chưa có draft nào.</div></section>
       </aside>
     </section>
@@ -105,6 +105,7 @@
   <script src="enhancements.js"></script>
   <script src="live-planner.js"></script>
   <script src="skill-engine.js"></script>
+  <script src="source-mapper.js"></script>
   <script src="agent-prompts.js"></script>
   <script src="task-prompts.js"></script>
   <script src="update-manager.js"></script>
